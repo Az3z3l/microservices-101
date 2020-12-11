@@ -118,7 +118,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/login", register).Methods("POST")
+	r.HandleFunc("/", register).Methods("POST")
 	srv := &http.Server{
 		Handler: r,
 		Addr:    "0.0.0.0:80",

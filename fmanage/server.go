@@ -350,9 +350,9 @@ func main() {
 
 	r.PathPrefix("/api/file/download/").Handler(http.StripPrefix("/api/file/download/", http.FileServer(http.Dir(dir))))
 
-	r.Handle("/api/file/upload", middleware(http.HandlerFunc(upload))).Methods("POST")
-	r.Handle("/api/file/delete", middleware(http.HandlerFunc(delete))).Methods("POST")
-	r.Handle("/api/file/available", middleware(http.HandlerFunc(available))).Methods("POST")
+	r.Handle("/upload", middleware(http.HandlerFunc(upload))).Methods("POST")
+	r.Handle("/delete", middleware(http.HandlerFunc(delete))).Methods("POST")
+	r.Handle("/available", middleware(http.HandlerFunc(available))).Methods("POST")
 
 	srv := &http.Server{
 		Handler: r,

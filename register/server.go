@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"time"
@@ -102,8 +103,14 @@ func register(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(`{ "Error": "Error inserting data. Please try again later" }`))
 			return
 		}
+		_, _ = http.PostForm("http://mailer/", url.Values{
+			"name":  {t.Username},
+			"email": {t.Email},
+		})
+
 		w.Header().Set("content-type", "application/json")
 		w.Write([]byte(`{ "Status": "OK" }`))
+		return
 	} else {
 		w.Header().Set("content-type", "application/json")
 		w.Write([]byte(`{ "Error": "Email exists already" }`))
@@ -114,7 +121,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/register", register).Methods("POST")
+	r.HandleFunc("/", register).Methods("POST")
 	srv := &http.Server{
 		Handler: r,
 		Addr:    "0.0.0.0:80",
