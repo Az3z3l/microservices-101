@@ -14,21 +14,21 @@ services:
       - ./nginxx/frontend/:/var/www/html/
 
   fmanage:
-    image: az3z3l/fus-fmanage
+    build: ./fmanage/.
     env_file:
       - ./secrets/vars.env
     expose:
       - "80"
 
   login:
-    image: az3z3l/fus-login
+    build: ./login/.
     env_file:
       - ./secrets/vars.env
     expose:
       - "80"
 
   register:
-    image: az3z3l/fus-register
+    build: ./register/.
     env_file:
       - ./secrets/vars.env
     links:
@@ -38,7 +38,7 @@ services:
 
 
   mailer:
-    image: az3z3l/fus-mailer
+    build: ./mailer/.
     env_file:
       - ./secrets/vars.env
     expose:
