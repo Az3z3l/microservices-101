@@ -2,16 +2,13 @@ version: '3'
 
 services:
   gateway:
-    image: nginx:latest
+    image: az3z3l/fus-nginx
     links:
       - fmanage:fmanage
       - login:login
       - register:register
     ports:
       - "1337:80"
-    volumes:
-      - ./nginxx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginxx/frontend/:/var/www/html/
 
   fmanage:
     image: az3z3l/fus-fmanage
