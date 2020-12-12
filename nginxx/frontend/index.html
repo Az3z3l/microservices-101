@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            File Upload Service
+        </title>
+    </head>
+    <script>
+        var x = document.cookie.indexOf('auth=');
+        if (x!=-1){
+            document.location="/upload.html";
+        } else {
+            document.location="/register.html"
+        }
+    </script>
+
+</html>

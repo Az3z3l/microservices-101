@@ -253,7 +253,7 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(t.Filename)
 	if err != nil || t.Filename == "" {
 		w.Header().Set("content-type", "application/json")
-		w.Write([]byte(`{ "Error": "No data" }`))
+		w.Write([]byte(`{ "Status": "No data" }`))
 		return
 	}
 
@@ -348,11 +348,11 @@ func main() {
 	flag.Parse()
 	r := mux.NewRouter()
 
-	r.PathPrefix("/api/file/download/").Handler(http.StripPrefix("/api/file/download/", http.FileServer(http.Dir(dir))))
+	r.PathPrefix("/download/").Handler(http.StripPrefix("/download/", http.FileServer(http.Dir(dir))))
 
 	r.Handle("/upload", middleware(http.HandlerFunc(upload))).Methods("POST")
 	r.Handle("/delete", middleware(http.HandlerFunc(delete))).Methods("POST")
-	r.Handle("/available", middleware(http.HandlerFunc(available))).Methods("POST")
+	r.Handle("/available", middleware(http.HandlerFunc(available))).Methods("GET")
 
 	srv := &http.Server{
 		Handler: r,

@@ -1,0 +1,230 @@
+<html lang="en"><head>
+
+    <meta charset="UTF-8">
+    
+  <!-- <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
+  <meta name="apple-mobile-web-app-title" content="CodePen">
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+  
+  <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111">
+  
+   -->
+    <title>Upload Here</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+  <style>
+  body {
+    background-color: whitesmoke;
+    background-image: url("./static/spdman.jpg");
+    background-size: cover; /* Resize the background image to cover the entire container */
+    border-bottom: 0px solid black;
+    height: 450px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    background-repeat: no-repeat;
+  }
+  
+  /* === Wrapper Styles === */
+  #FileUpload {
+    display: flex;
+    justify-content: center;
+  }
+  .wrapper {
+    margin: 30px;
+    padding: 10px;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    border-radius: 10px;
+    background-color: white;
+    width: 415px;
+  }
+  
+  /* === Upload Box === */
+  .upload {
+    margin: 10px;
+    height: 85px;
+    border: 8px dashed #e6f5e9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+  }
+  .upload p {
+    margin-top: 12px;
+    line-height: 0;
+    font-size: 22px;
+    color: #0c3214;
+    letter-spacing: 1.5px;
+  }
+  .upload__button {
+    background-color: #e6f5e9;
+    border-radius: 10px;
+    padding: 0px 8px 0px 10px;
+  }
+  .upload__button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  
+  /* === Uploaded Files === */
+  .uploaded {
+    width: 375px;
+    margin: 10px;
+    background-color: #e6f5e9;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .file {
+    display: flex;
+    flex-direction: column;
+  }
+  .file__name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 300px;
+    line-height: 0;
+    color: #0c3214;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+  }
+  .fa-times:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  .fa-file-pdf {
+    padding: 15px;
+    font-size: 40px;
+    color: #0c3214;
+  }
+  </style>
+  
+    <script>
+    window.console = window.console || function(t) {};
+    </script>
+  
+    
+    
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+        }
+    </script>
+  
+    <script>
+        async function abelabelFun(){
+            var response = await fetch("/api/file/available", {
+            credentials: "include",
+            headers: {
+                "content-type": "application/json",
+            },
+            "method": "GET",
+            "mode": "cors"
+            });
+            const json = await response.json();
+            names = json.names;
+            if (names == null){
+                document.getElementById("abelable").innerHTML="<h3>upload files to get started \\o/</h3>"
+                return
+            }
+            var x = "";
+            for (i = 0; i < names.length; i++) {
+            var asd = `
+            <div class="uploaded uploaded">
+                <i class="far fa-file-pdf"></i>
+                <div class="file">
+                    <div class="file__name">
+                        <p><a href="`+"/api/file/download/"+json.id+"/"+names[i]+`" download>`+names[i]+`</a></p>
+                        <i class="fas fa-times" onclick=deletefunc("`+names[i]+`")></i>
+                    </div>  
+                </div>
+            </div>
+            `;
+            x += asd; 
+            }
+            document.getElementById("abelable").innerHTML=x;
+        }
+
+        async function deletefunc(name){
+            var nano = JSON.stringify({
+                Filename : name,
+            }) 
+            var response = await fetch("/api/file/delete", {
+            credentials: "include",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: nano,
+            "method": "POST",
+            "mode": "cors"
+            });
+            const json = await response.json();
+            if (json.Status == 'OK'){
+                abelabelFun();
+            } else {
+                alert(json.Status)
+            }
+        }
+
+        async function uploadFnx(){
+            let url = "/api/file/upload"
+            const myInput = document.getElementById('uplodddbtn');
+            const data = new FormData();
+            data.append('file',myInput.files[0] );
+            var responz = await fetch(url, {
+                "credentials": "include",
+                "method": "POST",
+                "mode": "cors",
+                headers: {
+                    'Accept': 'application/json',
+                },
+                body: data,
+            })
+            let c = await responz.json();
+            if (c.Status == "OK"){
+                abelabelFun();
+            } else {
+                alert(c.Status)
+            }
+        }
+
+    </script>
+  
+  </head>
+  
+  <body translate="no" onload="abelabelFun()">
+    <!-- === File Upload ===
+  Design a file upload element. Is it the loading screen and icon? A progress element? Are folders being uploaded by flying across the screen like Ghostbusters? ;)  
+  -->
+  
+  <div id="FileUpload">
+    <div class="wrapper">
+      <div class="upload">
+        <!-- <p>Drag files here or <span class="upload__button">Browse</span></p> -->
+        <!-- <p>Choose your file:</p> -->
+        <input type="file" id="uplodddbtn"/>
+        <button type="button" onclick="uploadFnx()">upload</button>
+      </div>
+      <div id="abelable">
+        Your Files
+      </div>
+      </div>
+    </div>
+  </div>
+    
+    
+    
+    
+  
+  
+  
+  
+    </body>
+  </html>

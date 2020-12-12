@@ -11,7 +11,7 @@ mail_settings = {
     "MAIL_PORT": 587,
     "MAIL_USE_TLS": True,
     "MAIL_USE_SSL": False,
-    "MAIL_USERNAME": "yaswantr@am.students.amrita.edu",
+    "MAIL_USERNAME": os.environ.get('outlookemail'),
     "MAIL_PASSWORD": os.environ.get('outlookpwd'),
 
 }
@@ -26,7 +26,7 @@ def index():
     name = request.form.get("name")
     msg = Message(  
                     subject="FileUpload Service - Registration Successful",
-                    sender ='yaswantr@am.students.amrita.edu', 
+                    sender = os.environ.get('outlookemail'), 
                     recipients = [email] 
                 ) 
     msg.html = render_template('template.html', username=name)
