@@ -18,6 +18,7 @@ A fileupload-as-a-service that uses microservices to run built as a part of Clou
 - Python
 - Nginx(LoadBalancing and ProxyPass)
 - HTML and Vannila JS
+- MongoDB
 <br>
 
 ### MicroServices present:
