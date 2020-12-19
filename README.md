@@ -39,5 +39,3 @@ A fileupload-as-a-service that uses microservices to run built as a part of Clou
     - Handles sending requests to appropriate containers
     - Display frontend
 <br>
-
-Deployed at: http://34.71.80.196:1337/ 
